@@ -1,0 +1,44 @@
+import math
+
+def C(u):
+  if u == 0:
+    return math.sqrt(2) / 2
+  else:
+    return 1
+
+def DCT(pixel, M, N):
+  """Calculates the DCT coefficients for the given image block.
+
+  Args:
+    pixel: A 2D array of pixel values.
+    M: The width of the image block.
+    N: The height of the image block.
+
+  Returns:
+    A 2D array of DCT coefficients.
+  """
+
+  dct = [[0 for _ in range(N)] for _ in range(M)]
+  for u in range(M):
+    for v in range(N):
+      for x in range(M):
+        for y in range(N):
+          dct[u][v] += pixel[x][y] * math.cos(
+              (2 * y + 1) * (v * math.pi) / (2 * N)) * math.cos(
+                  (2 * x + 1) * (u * math.pi) / (2 * M))
+      dct[u][v] *= (2 * C(u) * C(v)) / math.sqrt(M * N)
+  return dct
+
+block = [[20, 30, 40, 50, 60, 70, 80, 90],
+        [20, 30, 40, 50, 60, 70, 80, 90],
+        [20, 30, 40, 50, 60, 70, 80, 90],
+        [20, 30, 40, 50, 60, 70, 80, 90],
+        [20, 30, 40, 50, 60, 70, 80, 90],
+        [20, 30, 40, 50, 60, 70, 80, 90],
+        [20, 30, 40, 50, 60, 70, 80, 90],
+        [20, 30, 40, 50, 60, 70, 80, 90]]
+
+dct_values = DCT(block, 8, 8)
+
+for i in range(8):
+    print(dct_values[i])
